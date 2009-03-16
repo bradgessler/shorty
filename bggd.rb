@@ -1,5 +1,5 @@
 require 'sinatra'
 
 get '/' do
-  "hey!"
+  redirect 'http://bradgessler.com/'
 end
