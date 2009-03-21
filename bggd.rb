@@ -4,9 +4,11 @@ require 'dm-core'
 require 'dm-validations'
 require 'activesupport'
 
-DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3://my.db')
+DataMapper::Logger.new(STDOUT, :debug)
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/bggd.db")
+DataMapper.auto_migrate!
 
-module Bggd
+module Token
   class << self
     def random
       ActiveSupport::SecureRandom.base64(4).gsub(/\=|\\|\+|\//,'')
@@ -20,8 +22,9 @@ class Url
   property :url, String
   property :key, String, :index => true, :key => true
   
-  validates_format :as => :url
+  validates_format :url, :as => :url
   validates_is_unique :key
+  validates_is_unique :url
 end
 
 template :layout
@@ -36,16 +39,16 @@ put '/' do
   if @url.save
     redirect @url.url
   else
-    "Oops"
+    haml :new
   end
 end
 
 post '/' do
-  @url = Url.new(:url => params[:url], :key => Bggd.random)
+  @url = Url.new(:url => params[:url], :key => Token.random)
 end
 
 get '/new' do
-  @key = Bggd.random
+  @url = Url.new(:url => params[:url], :key => Token.random)
   haml :new
 end
 
