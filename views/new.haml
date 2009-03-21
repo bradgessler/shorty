@@ -1,0 +1,7 @@
+%form{:method=>'post',:action=>'/'}
+  %input{:type=>'hidden',:name=>'_method',:value=>'put'}
+  %label{:for=>'key'} Key
+  %input#key{:type=>'text',:name=>'key',:value=>@key}
+  %label{:for=>'url'} Url
+  %input#url{:type=>'text',:name=>'url'}
+  %input{:type=>'submit',:value=>'Submit'}
