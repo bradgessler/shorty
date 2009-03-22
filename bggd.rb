@@ -6,7 +6,6 @@ require 'activesupport'
 
 DataMapper::Logger.new(STDOUT, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/bggd.db")
-DataMapper.auto_migrate!
 
 module Token
   class << self
@@ -19,14 +18,14 @@ end
 class Url
   include DataMapper::Resource
   
-  property :url, String
-  property :key, String, :index => true, :key => true
+  property :url, String, :length => 8.kilobytes
+  property :key, String, :index => true, :key => true, :length => 64.bytes
   
   validates_is_unique :key
   validates_is_unique :url
   
   validates_format :url, :as => :url
-  validates_format :key, :as => /^[a-z0-9]+$/i
+  validates_format :key, :as => /^[-_a-z0-9]+$/i
 end
 
 template :layout
@@ -39,14 +38,10 @@ put '/' do
   @url = Url.new(:url => params[:url], :key => params[:key])
   
   if @url.save
-    redirect @url.url
+    redirect "/#{@url.key}/show"
   else
     haml :new
   end
-end
-
-post '/' do
-  @url = Url.new(:url => params[:url], :key => Token.random)
 end
 
 get '/new' do
@@ -54,6 +49,18 @@ get '/new' do
   haml :new
 end
 
+get '/:key/show' do
+  if @url = Url.get(params[:key])
+    haml :show
+  else
+    halt 404, "Huh?"
+  end
+end
+
 get '/:key' do
-  "#{params[:key]}"
+  if @url = Url.get(params[:key])
+    redirect @url.url
+  else
+    halt 404, "Eh?"
+  end
 end
