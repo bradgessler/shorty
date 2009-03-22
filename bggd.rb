@@ -22,9 +22,11 @@ class Url
   property :url, String
   property :key, String, :index => true, :key => true
   
-  validates_format :url, :as => :url
   validates_is_unique :key
   validates_is_unique :url
+  
+  validates_format :url, :as => :url
+  validates_format :key, :as => /^[a-z0-9]+$/i
 end
 
 template :layout
