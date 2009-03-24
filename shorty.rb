@@ -1,9 +1,8 @@
 require 'rubygems'
 require 'sinatra'
-require 'dm-core'
-require 'dm-validations'
-require 'activesupport'
-require 'addressable/uri'
+require 'dm-core'         # sudo gem install dm-core
+require 'dm-validations'  # sudo gem install dm-more
+require 'activesupport'   # sudo gem install activesupport
 
 DataMapper::Logger.new(STDOUT, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/shorty.db")
@@ -19,8 +18,8 @@ end
 class Url
   include DataMapper::Resource
   
-  property :url, String, :length => 8.kilobytes
-  property :key, String, :index => true, :key => true, :length => 64.bytes
+  property :url, String, :length => 8192 # 8 kilobytes
+  property :key, String, :index => true, :key => true, :length => 64
   
   validates_is_unique :key
   validates_is_unique :url
@@ -37,7 +36,7 @@ get '/stylesheet.css' do
 end
 
 get '/' do
-  redirect 'http://bradgessler.com/'
+  redirect '/new'
 end
 
 put '/' do
