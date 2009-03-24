@@ -4,8 +4,12 @@
       %li=error
 %form{:method=>'post',:action=>'/'}
   %input{:type=>'hidden',:name=>'_method',:value=>'put'}
-  %label{:for=>'key'} Key
-  %input#key{:type=>'text',:name=>'key',:value=>@url.key}
-  %label{:for=>'url'} Url
-  %input#url{:type=>'text',:name=>'url',:value=>@url.url}
-  %input{:type=>'submit',:value=>'Submit'}
+  %ol
+    %li
+      %label{:for=>'key'} Key
+      %input#key{:type=>'text',:name=>'key',:value=>@url.key}
+    %li
+      %label{:for=>'url'} Url
+      %input#url{:type=>'text',:name=>'url',:value=>@url.url}
+    %li
+      %input{:type=>'submit',:value=>'Submit'}

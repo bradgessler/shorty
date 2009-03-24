@@ -3,15 +3,24 @@ require 'sinatra'
 require 'dm-core'
 require 'dm-validations'
 require 'activesupport'
+require 'addressable/uri'
 
 DataMapper::Logger.new(STDOUT, :debug)
-DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/bggd.db")
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/shorty.db")
 
-module Token
+module Shorty
   class << self
     def random
       ActiveSupport::SecureRandom.base64(4).gsub(/\=|\\|\+|\//,'')
     end
+  end
+  
+  def url(path)
+    Addressable::URI.parse(request.url).join(path).to_s
+  end
+  
+  def root_url
+    url('/')
   end
 end
 
@@ -30,6 +39,11 @@ end
 
 template :layout
 
+get '/stylesheet.css' do
+  content_type 'text/css', :charset => 'utf-8'
+  sass :stylesheet
+end
+
 get '/' do
   redirect 'http://bradgessler.com/'
 end
@@ -45,7 +59,7 @@ put '/' do
 end
 
 get '/new' do
-  @url = Url.new(:url => params[:url], :key => Token.random)
+  @url = Url.new(:url => params[:url], :key => Shorty.random)
   haml :new
 end
 

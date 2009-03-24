@@ -1,5 +1,3 @@
-require 'bggd.rb'
-# Middlewares
 use Rack::MethodOverride
-# Run it!
+require 'shorty.rb'
 run Sinatra::Application
