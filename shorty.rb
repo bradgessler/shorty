@@ -14,14 +14,6 @@ module Shorty
       ActiveSupport::SecureRandom.base64(4).gsub(/\=|\\|\+|\//,'')
     end
   end
-  
-  def url(path)
-    Addressable::URI.parse(request.url).join(path).to_s
-  end
-  
-  def root_url
-    url('/')
-  end
 end
 
 class Url

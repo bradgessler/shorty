@@ -1,4 +1,15 @@
-%dl
-  %dt=Shorty.root_url
-  %dd=@url.url
-%a{:href=>'/new'} Another
+%input#url{:type=>'text',:value=>"http://#{@env['HTTP_HOST']}/#{@url.key}",:size=>64}
+:javascript
+  $(document).ready(function(){
+    var url = $('#url');
+    url.focus();
+    url.select();
+    var width = url.val().length;
+    url.attr('size', width);
+    url.focus(function(url){
+      url.select();
+    })
+  });
+\=>
+=@url.url
+%a{:href=>'/new'} Another Please!
