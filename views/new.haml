@@ -1,20 +1,17 @@
 %form{:method=>'post',:action=>'/'}
   %input{:type=>'hidden',:name=>'_method',:value=>'put'}
   ="http://#{@env['HTTP_HOST']}/"
-  %input#key{:type=>'text',:name=>'key',:value=>@url.key}
+  %input#key.faux{:type=>'text',:name=>'key',:value=>@url.key,:tabindex=>2,:size=>8}>
   &#10132;
-  %input#url{:type=>'text',:name=>'url',:value=>@url.url}
+  %input#url{:type=>'text',:name=>'url',:value=>@url.url,:tabindex=>1,:size=>35}
   :javascript
     $(document).ready(function(){
       var url = $('#url');
-      if(url.val()==''){
-        url.val('http://');
-      }
       url.focus();
     });
-  %input{:type=>'submit',:value=>'Submit'}
+  %input{:type=>'submit',:value=>'Shorten',:tabindex=>3}
 -unless @url.errors.empty?
   #errors
-    %ul
-      -@url.errors.each do |error|
-        %li=error
+    Ru Roh!
+    =succeed ('.') do
+      =@url.errors.values.to_sentence.capitalize
