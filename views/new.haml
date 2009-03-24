@@ -2,11 +2,15 @@
   %input{:type=>'hidden',:name=>'_method',:value=>'put'}
   ="http://#{@env['HTTP_HOST']}/"
   %input#key{:type=>'text',:name=>'key',:value=>@url.key}
-  \=>
+  &#10132;
   %input#url{:type=>'text',:name=>'url',:value=>@url.url}
   :javascript
     $(document).ready(function(){
-      $('#url').focus()
+      var url = $('#url');
+      if(url.val()==''){
+        url.val('http://');
+      }
+      url.focus();
     });
   %input{:type=>'submit',:value=>'Submit'}
 -unless @url.errors.empty?
