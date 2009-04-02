@@ -8,11 +8,12 @@ require 'lib/doo_hickies'
 # Database settings. The DATABASE_URL stuff is used by Heroku
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/shorty.db")
 
-# What do you want to do with the root URL? Personally, I want it to 
+# What do you want to do with the root URL? Personally, I want it to
 # redirect to http://bradgessler.com
 redirect '/' => '/new'
 
-# Ok, you probably don't need to change anything beyond this point...
+# Ok, you probably don't need to change anything beyond this point! You can
+# stop unless you're feeling like superman.
 
 # The data model doesn't get any stupider than this folks!
 class Url
@@ -28,15 +29,6 @@ class Url
   # I only want to allow alpha, nums, _, and - in the URL key
   validates_format :key, :as => /^[-_a-z0-9]+$/i
 end
-
-module Shorty
-  def random_key
-    # Base 64 is fantastic except for the =, \, +, and / characters. Base62 anybody?
-    ActiveSupport::SecureRandom.base64(4).gsub(/\=|\\|\+|\//,'')
-  end
-end
-
-include Shorty
 
 template :layout
 
