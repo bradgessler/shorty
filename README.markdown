@@ -1,6 +1,6 @@
 = Shorty
 
-A tiny URL shorting application implemented in Sinatra and Datamapper.
+A tiny, dead-simple URL shorting application implemented in Sinatra and Datamapper.
 
 Copyright (c) 2009 Bradley Gessler
 

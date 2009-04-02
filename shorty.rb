@@ -3,30 +3,40 @@ require 'sinatra'
 require 'dm-core'         # sudo gem install dm-core
 require 'dm-validations'  # sudo gem install dm-more
 require 'activesupport'   # sudo gem install activesupport
+require 'lib/doo_hickies'
 
-DataMapper::Logger.new(STDOUT, :debug)
+# Database settings. The DATABASE_URL stuff is used by Heroku
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/shorty.db")
 
-module Shorty
-  class << self
-    def random
-      ActiveSupport::SecureRandom.base64(4).gsub(/\=|\\|\+|\//,'')
-    end
-  end
-end
+# What do you want to do with the root URL? Personally, I want it to 
+# redirect to http://bradgessler.com
+redirect '/' => '/new'
 
+# Ok, you probably don't need to change anything beyond this point...
+
+# The data model doesn't get any stupider than this folks!
 class Url
   include DataMapper::Resource
   
-  property :url, String, :length => 8192 # 8 kilobytes
+  property :url, String, :length => 2024 # 2 kilobytes, thats one BIG url!
   property :key, String, :index => true, :key => true, :length => 64
   
   validates_is_unique :key
   validates_is_unique :url
   
   validates_format :url, :as => :url
+  # I only want to allow alpha, nums, _, and - in the URL key
   validates_format :key, :as => /^[-_a-z0-9]+$/i
 end
+
+module Shorty
+  def random_key
+    # Base 64 is fantastic except for the =, \, +, and / characters. Base62 anybody?
+    ActiveSupport::SecureRandom.base64(4).gsub(/\=|\\|\+|\//,'')
+  end
+end
+
+include Shorty
 
 template :layout
 
@@ -35,22 +45,32 @@ get '/stylesheet.css' do
   sass :stylesheet
 end
 
-get '/' do
-  redirect '/new'
-end
-
+# If you PUT then you are defining the key!
 put '/' do
   @url = Url.new(:url => params[:url], :key => params[:key])
   
   if @url.save
     redirect "/#{@url.key}/show"
   else
+    status 406 # Unacceptable!
+    haml :new
+  end
+end
+
+# If you post, we'll pick the key for you! This is here for curlability.
+post '/' do
+  @url = Url.new(:url => params[:url], :key => random_key)
+  
+  if @url.save
+    redirect "/#{@url.key}"
+  else
+    status 406 # Unacceptable!
     haml :new
   end
 end
 
 get '/new' do
-  @url = Url.new(:url => params[:url], :key => Shorty.random)
+  @url = Url.new(:url => params[:url], :key => random_key)
   haml :new
 end
 
