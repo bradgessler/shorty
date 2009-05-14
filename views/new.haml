@@ -7,17 +7,16 @@
   %input#shorten{:type=>'submit',:value=>'Shorten',:tabindex=>3}
 #status
 :javascript
-  $(document).ready(function(){
-    $('#url').focus();
-    $('#shortener').submit(function(){
-      $.ajax({
-        type: "PUT",
-        url: "/" + $('#key').val(),
-        data: $('#url').val(),
-        complete: function (XHR, textStatus) {
-          alert(XHR.status + ' ' + textStatus);
-        }
-      });
-      return false;
+  $('shortener').observe('submit', function(e){
+    var url = '/' + $('key').value;
+    alert(url);
+    new Ajax.Request(url, {
+      method: 'put',
+      contentType: 'text/plain',
+      postBody: $('url').value,
+      onComplete: function(xhr) {
+        alert(xhr.status);
+      }
     });
+    e.stop();
   });
