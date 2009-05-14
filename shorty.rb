@@ -9,7 +9,7 @@ DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/shorty.
 
 # What do you want to do with the root URL? Personally, I want it to
 # redirect to http://bradgessler.com
-set :root_redirect, '/new'
+set :root_redirect, 'http://www.polleverywhere.com/vote'
 
 # The data model doesn't get any stupider than this folks!
 class Url
