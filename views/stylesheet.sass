@@ -13,9 +13,12 @@ input.faux
 #main
   :margin 10em 0
   :font-size 1.25em
-  #errors
+  #status
     :padding 0.5em 0
-    :color #f00
+    &.error
+      :color #f00
+    &.ok
+      :color #0f0
 #header
   h1
     :display inline
