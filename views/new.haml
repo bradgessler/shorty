@@ -14,8 +14,8 @@
         type: "PUT",
         url: "/" + $('#key').val(),
         data: $('#url').val(),
-        complete: function (XMLHttpRequest, textStatus) {
-          alert(XMLHttpRequest.status);
+        complete: function (XHR, textStatus) {
+          alert(XHR.status + ' ' + textStatus);
         }
       });
       return false;

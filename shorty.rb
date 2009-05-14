@@ -74,6 +74,11 @@ post '/' do
   end
 end
 
+get '/key' do
+  content_type 'text/plain', :charset => 'utf-8'
+  random_key
+end
+
 get '/new' do
   @url = Url.new(:url => params[:url], :key => random_key)
   haml :new
