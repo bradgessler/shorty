@@ -7,26 +7,26 @@ and DataMapper.
 
 Shorty requires the following gems:
 
-> sudo gem install sinatra
-> sudo gem install rack
-> sudo gem install dm-core
-> sudo gem install dm-more
+    sudo gem install sinatra
+    sudo gem install rack
+    sudo gem install dm-core
+    sudo gem install dm-more
 
 ## Getting Started
 
 Once you have your gems squared away, you'll need to migrate the
 database. Just run:
 
-> rake db:migrate
+    rake db:migrate
 
 from the root of the shorty repository. Now you're ready to start
 Shorty!
 
-> rackup config.ru
+    rackup config.ru
 
 Point your browser to
 
-> http://localhost:9292/
+    http://localhost:9292/
 
 and you should see the URL shortening page.
 
@@ -35,19 +35,19 @@ and you should see the URL shortening page.
 Shorty is configurable via Rack. The default stack uses Rack::Cascade
 to deliver a Shorty server with a user interface and a root redirect:
 
-> run Rack::Cascade.new([
->   Shorty::RootRedirect.new,
->   Shorty::UI,
->   Shorty::Core
-> ])
+    run Rack::Cascade.new([
+      Shorty::RootRedirect.new,
+      Shorty::UI,
+      Shorty::Core
+    ])
 
 Shorty could be run headless and point to your own website with the
 following configuration:
 
-> run Rack::Cascade.new([
->   Shorty::RootRedirect.new('http://www.polleverywhere.com/'),
->   Shorty::Core
-> ])
+    run Rack::Cascade.new([
+      Shorty::RootRedirect.new('http://www.polleverywhere.com/'),
+      Shorty::Core
+    ])
 
 Since Shorty takes full advantage of rack, it is possible to drop
 other pieces of middleware into the application stack, like caching
@@ -59,20 +59,20 @@ Shorty has a minimal API that is usable even via curl. If you just
 want a shortened URL and don't care about the resulting URL key, 
 simply POST the long url to shorty:
 
-> curl -X POST -d 'http://www.yahoo.com/', 'localhost:9292'
-> Created http://localhost:9292/MrVojA
+    curl -X POST -d 'http://www.yahoo.com/', 'localhost:9292'
+    Created http://localhost:9292/MrVojA
 
 To name a short URL key, you PUT the url to the shortened URL that
 you would like:
 
-> curl -X PUT -d 'http://www.yahoo.com/', 'localhost:9292/yahoo'
-> Created http://localhost:9292/yahoo
+    curl -X PUT -d 'http://www.yahoo.com/', 'localhost:9292/yahoo'
+    Created http://localhost:9292/yahoo
 
 If that URL is taken, you'll get a 409 conflict as well as the following
 message:
 
-> curl -X PUT -d 'http://www.amazon.com/', 'localhost:9292/yahoo'
-> http://localhost:9292/yahoo has been taken
+    curl -X PUT -d 'http://www.amazon.com/', 'localhost:9292/yahoo'
+    http://localhost:9292/yahoo has been taken
 
 Copyright (c) 2009 Bradley Gessler
 
