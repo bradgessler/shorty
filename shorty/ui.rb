@@ -6,8 +6,6 @@ module Shorty
   class UI < Sinatra::Base
     set :root, File.expand_path(File.join(File.dirname(__FILE__), '/ui'))
     
-    template :layout
-    
     helpers do
       def url(path)
         "http://#{host_name}/#{path}"
