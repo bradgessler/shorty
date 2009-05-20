@@ -1,15 +1,22 @@
-%input#url{:type=>'text',:value=>"http://#{@env['HTTP_HOST']}/#{@url.key}",:size=>64}
+%form#shortener{:method=>'post',:action=>'/'}
+  %input{:type=>'hidden',:name=>'_method',:value=>'put'}
+  ="http://#{@env['HTTP_HOST']}/"
+  %input#key.faux{:type=>'text',:name=>'key',:value=>@url.key,:tabindex=>2,:size=>8}>
+  &#10132;
+  %input#url{:type=>'text',:name=>'url',:value=>@url.url,:tabindex=>1,:size=>35}
+  %input#shorten{:type=>'submit',:value=>'Shorten',:tabindex=>3}
+#status
 :javascript
-  $(document).ready(function(){
-    var url = $('#url');
-    url.focus();
-    url.select();
-    var width = url.val().length;
-    url.attr('size', width);
-    url.focus(function(url){
-      url.select();
-    })
+  $('shortener').observe('submit', function(e){
+    var url = '/' + $('key').value;
+    alert(url);
+    new Ajax.Request(url, {
+      method: 'put',
+      contentType: 'text/plain',
+      postBody: $('url').value,
+      onComplete: function(xhr) {
+        alert(xhr.status);
+      }
+    });
+    e.stop();
   });
-&#10132;
-=@url.url
-%a{:href=>'/new'} Another Please!
