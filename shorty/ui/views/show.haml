@@ -7,16 +7,24 @@
   %input#shorten{:type=>'submit',:value=>'Shorten',:tabindex=>3}
 #status
 :javascript
-  $('shortener').observe('submit', function(e){
-    var url = '/' + $('key').value;
-    alert(url);
-    new Ajax.Request(url, {
-      method: 'put',
-      contentType: 'text/plain',
-      postBody: $('url').value,
-      onComplete: function(xhr) {
-        alert(xhr.status);
+  // Replace me with some magical jQuery that makes this thing work!
+  $('#shortener').submit(function(){
+    $.ajax({
+      type: "PUT",
+      url: "/" + $('#key').val(),
+      data: $('#url').val(),
+      complete: function(xhr, textStatus){
+        if(xhr.status == 302){
+          alert(xhr.getResponseHeaders);
+        }
+        else if (xhr.status == 0) {
+          alert(0);
+        }
+        else 
+        {
+          alert(xhr.responseText);
+        }
       }
     });
-    e.stop();
+    return false;
   });

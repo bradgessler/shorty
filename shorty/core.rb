@@ -49,6 +49,7 @@ module Shorty
     end
 
     get '/:key' do
+      debugger
       if @url = Url.get(params[:key])
         redirect @url.url
       else
