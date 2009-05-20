@@ -6,6 +6,6 @@ require 'shorty/ui.rb'
 
 run Rack::Cascade.new([
   Shorty::RootRedirect.new('http://www.polleverywhere.com/'),
-  Shorty::Core,
-  Shorty::UI
+  Shorty::UI,
+  Shorty::Core
 ])

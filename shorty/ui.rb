@@ -1,6 +1,6 @@
 require 'rubygems'
-require 'sinatra'
 require 'haml'
+require 'sinatra'
 
 module Shorty
   class UI < Sinatra::Base
@@ -90,3 +90,42 @@ __END__
     });
     e.stop();
   });
+  
+@@ stylesheet
+body
+  :background #fff
+  :border-top 10px solid #f00
+body, input
+  :font
+    :family Helvetica
+    :size 1em
+  :margin 0
+input.faux
+  :border none
+.wrapper.outter
+  :padding 2em
+#main
+  :margin 10em 0
+  :font-size 1.25em
+  #status
+    :padding 0.5em 0
+    &.error
+      :color #f00
+    &.ok
+      :color #0f0
+#header
+  h1
+    :display inline
+    :font
+      :size 1em
+    :color #f00
+    :margin 0
+    :padding 0
+  h2
+    :display inline
+    :font
+      :size 0.75em
+      :weight normal
+    :color #999
+    :margin 0
+    :padding 0

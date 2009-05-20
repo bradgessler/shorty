@@ -1,6 +1,49 @@
 = Shorty
 
-A tiny, dead-simple URL shorting application implemented in Sinatra and Datamapper.
+A modular URL shorting application implemented in Sinatra, Rack 
+and Datamapper. 
+
+== Configuration
+Shorty is configurable via Rack. The default stack uses Rack::Cascade
+to deliver a Shorty server with a user interface and a root redirect:
+
+  run Rack::Cascade.new([
+    Shorty::RootRedirect.new,
+    Shorty::UI,
+    Shorty::Core
+  ])
+
+Shorty could be run headless and point to your own website with the
+following configuration:
+
+  run Rack::Cascade.new([
+    Shorty::RootRedirect.new('http://www.polleverywhere.com/'),
+    Shorty::Core
+  ])
+
+Since Shorty takes full advantage of rack, it is possible to drop
+other pieces of middleware into the application stack, like caching
+and/or authentication.
+  
+== Use
+Shorty has a minimal API that is usable even via curl. If you just 
+want a shortened URL and don't care about the resulting URL key, 
+simply POST the long url to shorty:
+
+  curl -X POST -d 'http://www.yahoo.com/', 'localhost:9292'
+  Created http://localhost:9292/MrVojA
+  
+To name a short URL key, you PUT the url to the shortened URL that
+you would like:
+  
+  curl -X PUT -d 'http://www.yahoo.com/', 'localhost:9292/yahoo'
+  Created http://localhost:9292/yahoo
+  
+If that URL is taken, you'll get a 409 conflict as well as the following
+message:
+  
+  curl -X PUT -d 'http://www.amazon.com/', 'localhost:9292/yahoo'
+  http://localhost:9292/yahoo has been taken
 
 Copyright (c) 2009 Bradley Gessler
 
