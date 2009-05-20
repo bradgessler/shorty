@@ -1,12 +1,13 @@
 require 'rubygems'
 require 'haml'
 require 'sinatra'
+require 'ruby-debug'
 
 module Shorty
   class UI < Sinatra::Base
-    template :layout
+    set :root, File.expand_path(File.join(File.dirname(__FILE__), '/ui'))
     
-    use_in_file_templates!
+    template :layout
     
     helpers do
       def url(path)
@@ -24,6 +25,9 @@ module Shorty
     end
     
     get '/new' do
+      debugger
+      # TODO make this random key come from core via an AJAX call 
+      # from /key. Look at core.rb to see how that thing works.
       @url = Url.new(:url => params[:url], :key => 'random_key')
       haml :show
     end
@@ -45,87 +49,3 @@ module Shorty
     end
   end
 end
-
-__END__
-@@ layout
-!!!
-!!! xml
-%html
-  %head
-    %title shorty
-    %link{:href=>'/stylesheet.css',:rel=>'stylesheet',:type=>'text/css'}
-    %script{:type=>'text/javascript',:src=>'/prototype-1.6.0.3.js'}
-  %body
-    .wrapper.outter
-      #header
-        .wrapper.inner
-          %h1 shorty
-          %h2 A tiny URL shortner
-      #main
-        .wrapper.inner
-          =yield
-      #footer
-        .wrapper.inner
-
-@@ show
-%form#shortener{:method=>'post',:action=>'/'}
-  %input{:type=>'hidden',:name=>'_method',:value=>'put'}
-  ="http://#{@env['HTTP_HOST']}/"
-  %input#key.faux{:type=>'text',:name=>'key',:value=>@url.key,:tabindex=>2,:size=>8}>
-  &#10132;
-  %input#url{:type=>'text',:name=>'url',:value=>@url.url,:tabindex=>1,:size=>35}
-  %input#shorten{:type=>'submit',:value=>'Shorten',:tabindex=>3}
-#status
-:javascript
-  $('shortener').observe('submit', function(e){
-    var url = '/' + $('key').value;
-    alert(url);
-    new Ajax.Request(url, {
-      method: 'put',
-      contentType: 'text/plain',
-      postBody: $('url').value,
-      onComplete: function(xhr) {
-        alert(xhr.status);
-      }
-    });
-    e.stop();
-  });
-  
-@@ stylesheet
-body
-  :background #fff
-  :border-top 10px solid #f00
-body, input
-  :font
-    :family Helvetica
-    :size 1em
-  :margin 0
-input.faux
-  :border none
-.wrapper.outter
-  :padding 2em
-#main
-  :margin 10em 0
-  :font-size 1.25em
-  #status
-    :padding 0.5em 0
-    &.error
-      :color #f00
-    &.ok
-      :color #0f0
-#header
-  h1
-    :display inline
-    :font
-      :size 1em
-    :color #f00
-    :margin 0
-    :padding 0
-  h2
-    :display inline
-    :font
-      :size 0.75em
-      :weight normal
-    :color #999
-    :margin 0
-    :padding 0
