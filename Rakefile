@@ -1,8 +1,8 @@
 namespace :db do
   desc "Loads our environment for various tasks that need it"
   task :environment do
-    require 'shorty'
-    DataMapper::Logger.new(STDOUT, :debug)
+    require 'shorty/model'
+    DataMapper::Logger.new($stdout, :debug)
   end
   
   desc "Migrate the database" # Convention for Heroku
