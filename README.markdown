@@ -1,9 +1,9 @@
-= Shorty
+# Shorty
 
 A modular URL shorting application implemented in Sinatra, Rack 
 and DataMapper. 
 
-== Installation
+## Installation
 
 Shorty requires the following gems:
 
@@ -12,7 +12,7 @@ Shorty requires the following gems:
  sudo gem install dm-core
  sudo gem install dm-more
 
-== Getting Started
+## Getting Started
 
 Once you have your gems squared away, you'll need to migrate the
 database. Just run:
@@ -30,7 +30,7 @@ Point your browser to
   
 and you should see the URL shortening page.
 
-== Advanced Configuration
+## Advanced Configuration
 
 Shorty is configurable via Rack. The default stack uses Rack::Cascade
 to deliver a Shorty server with a user interface and a root redirect:
@@ -53,7 +53,7 @@ Since Shorty takes full advantage of rack, it is possible to drop
 other pieces of middleware into the application stack, like caching
 and/or authentication.
   
-== API
+## API
 
 Shorty has a minimal API that is usable even via curl. If you just 
 want a shortened URL and don't care about the resulting URL key, 
