@@ -74,6 +74,8 @@ message:
     curl -X PUT -d 'http://www.amazon.com/', 'localhost:9292/yahoo'
     http://localhost:9292/yahoo has been taken
 
+# MIT License
+
 Copyright (c) 2009 Bradley Gessler
 
 Permission is hereby granted, free of charge, to any person
