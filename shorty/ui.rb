@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'haml'
 require 'sinatra'
-require 'ruby-debug'
 
 module Shorty
   class UI < Sinatra::Base
@@ -25,7 +24,6 @@ module Shorty
     end
     
     get '/new' do
-      debugger
       # TODO make this random key come from core via an AJAX call 
       # from /key. Look at core.rb to see how that thing works.
       @url = Url.new(:url => params[:url], :key => 'random_key')
