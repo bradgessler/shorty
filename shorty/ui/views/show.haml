@@ -7,24 +7,17 @@
   %input#shorten{:type=>'submit',:value=>'Shorten',:tabindex=>3}
 #status
 :javascript
-  // Replace me with some magical jQuery that makes this thing work!
-  $('#shortener').submit(function(){
-    $.ajax({
-      type: "PUT",
-      url: "/" + $('#key').val(),
-      data: $('#url').val(),
-      complete: function(xhr, textStatus){
-        if(xhr.status == 302){
-          alert(xhr.getResponseHeaders);
+  (function(){
+    $('#shortener').submit(function(){
+      $.shorty($('#url').val(), $('#key').val(), {
+        success: function(url){
+          alert('Created ' + url);
+        },
+        error: function(error){
+          alert(error);
         }
-        else if (xhr.status == 0) {
-          alert(0);
-        }
-        else 
-        {
-          alert(xhr.responseText);
-        }
-      }
+      });
+      return false;
     });
-    return false;
-  });
+  })();
+  // Replace me with some magical jQuery that makes this thing work!

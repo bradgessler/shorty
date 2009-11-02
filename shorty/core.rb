@@ -22,25 +22,14 @@ module Shorty
     # If you PUT then you are defining the key!
     put '/:key' do
       halt [ 409, "#{url(params[:key])} has been taken" ] if Url.get(params[:key])
-
       @url = Url.new(:url => request.body.read.chomp, :key => params[:key])
-
-      if @url.save
-        redirect url(@url.key), "Created #{url(@url.key)}"
-      else
-        halt 406, "URL or Key format is invalid"
-      end
+      save_url
     end
 
     # If you post, we'll pick the key for you! This is here for curlability.
     post '/' do
       @url = Url.new(:url => request.body.read.chomp, :key => random_key)
-
-      if @url.save
-        redirect url(@url.key), "Created #{url(@url.key)}"
-      else
-        halt 406, "URL or Key format is invalid"
-      end
+      save_url
     end
 
     get '/key' do
@@ -49,11 +38,21 @@ module Shorty
     end
 
     get '/:key' do
-      debugger
       if @url = Url.get(params[:key])
         redirect @url.url
       else
         halt 404, "Eh?"
+      end
+    end
+    
+  protected
+    # Tries to save the url
+    def shorten_url
+      if @url.save
+        headers 'Location' => url(@url.key)
+        halt 201, "Created #{url(@url.key)}"
+      else
+        halt 406, "URL or Key format is invalid"
       end
     end
   end
