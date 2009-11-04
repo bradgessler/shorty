@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'sinatra'
-require 'activesupport'   # sudo gem install activesupport
 
 module Shorty
   class Core < Sinatra::Base
@@ -11,11 +10,6 @@ module Shorty
       
       def host_name
         env['HTTP_HOST']
-      end
-      
-      def random_key
-        # Base 64 is fantastic except for the =, \, +, and / characters. Base62 anybody?
-        ActiveSupport::SecureRandom.base64(4).gsub(/\=|\\|\+|\//,'')
       end
     end
     
@@ -28,13 +22,12 @@ module Shorty
 
     # If you post, we'll pick the key for you! This is here for curlability.
     post '/' do
-      @url = Url.new(:url => request.body.read.chomp, :key => random_key)
+      @url = Url.new(:url => request.body.read.chomp, :key => Url.random_key)
       save_url
     end
 
-    get '/key' do
-      content_type 'text/plain', :charset => 'utf-8'
-      random_key
+    get '/key/random' do
+      Url.random_key
     end
 
     get '/:key' do
@@ -47,7 +40,7 @@ module Shorty
     
   protected
     # Tries to save the url
-    def shorten_url
+    def save_url
       if @url.save
         headers 'Location' => url(@url.key)
         halt 201, "Created #{url(@url.key)}"

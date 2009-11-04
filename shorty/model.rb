@@ -1,5 +1,6 @@
 require 'dm-core'         # sudo gem install dm-core
 require 'dm-validations'  # sudo gem install dm-more
+require 'activesupport'   # sudo gem install activesupport
 
 # Database settings. The DATABASE_URL stuff is used by Heroku
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/shorty.db")
@@ -7,7 +8,7 @@ DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/shorty.
 module Shorty
   class Url
     include DataMapper::Resource
-  
+    
     IPv4_PART = /\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]/  # 0-255
     URL_REGEXP = %r{
       \A
@@ -19,13 +20,17 @@ module Shorty
       ([/?]\S*)?                                       # optional /whatever or ?whatever
       \Z
     }iux
-  
+    
     property :url, String, :length => 2024 # ~ 2 kilobytes, thats one BIG url! Bigger than what IE can handle!
     property :key, String, :index => true, :key => true, :length => 64
-  
+    
     validates_present :url
     validates_format :url, :as => URL_REGEXP
-    validates_is_unique :key
     validates_format :key, :as => /^[-_a-z0-9]+$/i  # I only want to allow alpha, nums, _, and - in the URL key
+    validates_is_unique :key
+    
+    def self.random_key
+      ActiveSupport::SecureRandom.base64(4).gsub(/\=|\\|\+|\//,'')
+    end
   end
 end

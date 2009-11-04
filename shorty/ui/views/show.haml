@@ -8,13 +8,17 @@
 #status
 :javascript
   (function(){
-    $('#shortener').submit(function(){
-      $.shorty($('#url').val(), $('#key').val(), {
+    $('#shortener').submit(function(e){
+      $.shorty.shorten($('#url').val(), $('#key').val(), {
         success: function(url){
-          alert('Created ' + url);
+          $('#status').text('Created ' + url);
+          $.shorty.getKey(function(newKey){
+            $('#key').val(newKey);
+            $('#url').val('');
+          });
         },
         error: function(error){
-          alert(error);
+          $('#status').text(error);
         }
       });
       return false;
