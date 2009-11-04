@@ -17,13 +17,13 @@ module Shorty
     put '/:key' do
       halt [ 409, "#{url(params[:key])} has been taken" ] if Url.get(params[:key])
       @url = Url.new(:url => request.body.read.chomp, :key => params[:key])
-      save_url
+      shorten_url
     end
 
     # If you post, we'll pick the key for you! This is here for curlability.
     post '/' do
       @url = Url.new(:url => request.body.read.chomp, :key => Url.random_key)
-      save_url
+      shorten_url
     end
 
     get '/key/random' do
@@ -40,7 +40,7 @@ module Shorty
     
   protected
     # Tries to save the url
-    def save_url
+    def shorten_url
       if @url.save
         headers 'Location' => url(@url.key)
         halt 201, "Created #{url(@url.key)}"
