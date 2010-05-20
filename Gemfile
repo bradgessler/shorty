@@ -1,7 +1,7 @@
 source :rubygems
 
 gem 'dm-core'
-gem 'dm-more'
+gem 'dm-validations'
 gem 'activesupport'
 gem 'sinatra'
 gem 'haml'
