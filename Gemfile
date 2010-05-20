@@ -11,3 +11,7 @@ group :development do
   gem 'data_objects'
   gem 'do_sqlite3'
 end
+
+group :production do
+  gem 'do_postgres'
+end
