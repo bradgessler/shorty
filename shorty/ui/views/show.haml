@@ -1,7 +1,7 @@
 %form#shortener{:method=>'post',:action=>'/'}
   %input{:type=>'hidden',:name=>'_method',:value=>'put'}
   ="http://#{@env['HTTP_HOST']}/"
-  %input#key.faux{:type=>'text',:name=>'key',:value=>@url.key,:tabindex=>2,:size=>8}>
+  %input#path.faux{:type=>'text',:name=>'path',:value=>@url.path,:tabindex=>2,:size=>8}>
   &#10132;
   %input#url{:type=>'text',:name=>'url',:value=>@url.url,:tabindex=>1,:size=>35}
   %input#shorten{:type=>'submit',:value=>'Shorten',:tabindex=>3}
@@ -9,11 +9,11 @@
 :javascript
   (function(){
     $('#shortener').submit(function(e){
-      $.shorty.shorten($('#url').val(), $('#key').val(), {
+      $.shorty.shorten($('#url').val(), $('#path').val(), {
         success: function(url){
           $('#status').text('Created ' + url);
           $.shorty.getKey(function(newKey){
-            $('#key').val(newKey);
+            $('#path').val(newKey);
             $('#url').val('');
           });
         },

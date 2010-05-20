@@ -1,6 +1,7 @@
 require 'dm-core'         # sudo gem install dm-core
 require 'dm-validations'  # sudo gem install dm-more
 require 'active_support'  # sudo gem install activesupport
+require 'anybase'
 
 # Database settings. The DATABASE_URL stuff is used by Heroku
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/shorty.db")
@@ -22,15 +23,19 @@ module Shorty
     }iux
     
     property :url, String, :length => 2024 # ~ 2 kilobytes, thats one BIG url! Bigger than what IE can handle!
-    property :key, String, :index => true, :key => true, :length => 64
+    property :path, String, :index => true, :key => true, :length => 64
     
     validates_present :url
     validates_format :url, :as => URL_REGEXP
-    validates_format :key, :as => /^[-_a-z0-9]+$/i  # I only want to allow alpha, nums, _, and - in the URL key
-    validates_is_unique :key
+    validates_format :path, :as => /^[-_a-z0-9]+$/i  # I only want to allow alpha, nums, _, and - in the URL key
+    validates_is_unique :path
     
-    def self.random_key
-      ActiveSupport::SecureRandom.base64(4).gsub(/\=|\\|\+|\//,'')
+    def self.random_path
+      Anybase::Base62.random(path_size)
+    end
+    
+    def self.path_size
+      8
     end
   end
 end

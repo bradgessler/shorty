@@ -22,20 +22,20 @@ module Shorty
     end
     
     get '/new' do
-      @url = Url.new(:url => params[:url], :key => Url.random_key)
+      @url = Url.new(:url => params[:url], :path => Url.random_path)
       haml :show
     end
     
-    get '/:key/show' do
-      if @url = Url.get(params[:key])
+    get '/:path/show' do
+      if @url = Url.get(params[:path])
         haml :show
       else
         halt 404, "Huh?"
       end
     end
     
-    get '/:key' do
-      if @url = Url.get(params[:key])
+    get '/:path' do
+      if @url = Url.get(params[:path])
         redirect @url.url
       else
         halt 404, "Eh?"
