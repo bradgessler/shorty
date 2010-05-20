@@ -6,5 +6,8 @@ gem 'activesupport'
 gem 'sinatra'
 gem 'haml'
 gem 'rack'
-gem 'data_objects'
-gem 'do_sqlite3'
+
+group :development do
+  gem 'data_objects'
+  gem 'do_sqlite3'
+end
