@@ -1,3 +1,7 @@
+require 'rubygems'
+require 'bundler'
+Bundler.setup
+
 namespace :db do
   desc "Loads our environment for various tasks that need it"
   task :environment do

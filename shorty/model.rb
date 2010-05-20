@@ -1,6 +1,6 @@
 require 'dm-core'         # sudo gem install dm-core
 require 'dm-validations'  # sudo gem install dm-more
-require 'activesupport'   # sudo gem install activesupport
+require 'active_support'   # sudo gem install activesupport
 
 # Database settings. The DATABASE_URL stuff is used by Heroku
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:///#{Dir.pwd}/shorty.db")

@@ -1,4 +1,4 @@
-require 'shorty/model.rb'
-require 'shorty/root_redirect.rb'
-require 'shorty/core.rb'
-require 'shorty/ui.rb'
+require 'shorty/model'
+require 'shorty/root_redirect'
+require 'shorty/core'
+require 'shorty/ui'

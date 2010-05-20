@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'haml'
 require 'sinatra'
 
@@ -23,8 +22,6 @@ module Shorty
     end
     
     get '/new' do
-      # TODO make this random key come from core via an AJAX call 
-      # from /key. Look at core.rb to see how that thing works.
       @url = Url.new(:url => params[:url], :key => Url.random_key)
       haml :show
     end
