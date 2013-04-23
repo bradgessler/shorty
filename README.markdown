@@ -11,7 +11,7 @@ Clone:
 
 Run bundler from the project directory:
 
-    $ cd ./shorty & bundle
+    $ cd ./shorty && bundle
 
 ## Getting Started
 
