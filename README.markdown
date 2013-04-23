@@ -5,12 +5,13 @@ and DataMapper.
 
 ## Installation
 
-Shorty requires the following gems:
+Clone:
 
-    sudo gem install sinatra
-    sudo gem install rack
-    sudo gem install dm-core
-    sudo gem install dm-more
+    $ git clone git@github.com:bradgessler/shorty.git
+
+Run bundler from the project directory:
+
+    $ cd ./shorty & bundle
 
 ## Getting Started
 
